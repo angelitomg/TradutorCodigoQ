@@ -1,0 +1,228 @@
+<!doctype html>
+
+<html lang="pt-br">
+
+<!--
+
+	Tradutor de Codigo Q
+	
+	Angelito M. Goulart
+	
+	<angelito@bsd.com.br>
+	
+	Ultima atualizacao: 24/10/2012
+	
+	Fonte: http://pt.wikipedia.org/wiki/C%C3%B3digo_Internacional_Q
+
+-->
+
+<head>
+
+	<meta charset="utf-8" />
+	
+	<meta name="author" content="Angelito M. Goulart" />
+	
+	<meta name="description" content="Tradutor de Código Q" />
+	
+	<meta name="keywords" content="codigo q, tradutor codigo q, radiamador, tabela codigo q, tradutor q" />
+	
+	<title>Tradutor de Código Q</title>
+	
+	<style type="text/css">
+		body { background-color: #CECECE; color: #606060; font-family: arial, verdana, sans-serif; text-align: center; }
+		#conteudo { margin: 0 auto; text-align: left; width: 360px; }
+		#conteudo h1 { font-size: 40px; letter-spacing: -3px;}
+		#codigo { width: 300px; height: 30px; font-size: 20px; color: #D3C6CC; }
+		#resultado { font-size: 16px; margin: 5px; font-weight: bold; }
+		label { display: block; font-size: 18px; letter-spacing: -1px;}
+	</style>
+	
+	<script type="text/javascript">
+		// Funcao a ser chamada quando a pagina for carregada
+		window.onload = function(){
+			verificarCampo();
+		}
+	</script>
+	
+</head>
+
+<body>
+	
+	<!-- Div principal -->
+	<div id="pagina">
+	
+		<!-- Div que ira conter o conteudo da pagina -->
+		<div id="conteudo">
+		
+			<!-- Form principal -->
+			<form name="form" id="form">
+				<h1>Tradutor de C&oacute;digo Q</h1>
+				<input type="text" name="codigo" id="codigo" maxlength="3"
+					onfocus="javascript:limparCampo();" 
+					onblur="javascript:verificarCampo();" 
+					onkeyup="javascript:buscarCodigo();" />
+			</form>
+			
+			<!-- Div de exibicao do resultado -->
+			<div id="resultado"></div>
+			
+		</div>
+		
+	</div>
+	
+	<script type="text/javascript">
+		
+		// Lista de codigos
+		var codigos = {
+			QAP: 'Está na escuta?',
+			QAM: 'Qual é a condição meteorológica?',
+			QRA: 'Qual o nome operador?',
+			QRB: 'A qual distância aproximada você está da minha estação?',
+			QRC: 'Que organização particular (ou administração estadual) liquida as contas de sua estação?',
+			QRD: 'Aonde vai e de onde vem?',
+			QRE: 'A que horas pensa chegar a... (ou estar sobre...) (lugar)',
+			QRG: 'Qual é minha frequência exata (ou frequência exata de...)?',
+			QRH: 'Minha frequência varia?',
+			QRI: 'Como é a tonalidade de minha estação?',
+			QRJ: 'Quantas chamadas radiotelefônicas você tem para despachar?',
+			QRK: 'Qual a clareza dos meus sinais (ou de...) ?',
+			QRL: 'Você está ocupado?',
+			QRM: 'Está sendo interferido?',
+			QRN: 'Está sendo perturbado por estática?',
+			QRO: 'Devo aumentar a potência do transmissor?',
+			QRP: 'Devo diminuir a potência do transmissor?',
+			QRQ: 'Devo transmitir mais depressa?',
+			QRR: 'Está pronto para operação automática?',
+			QRS: 'Devo transmitir mais devagar?',
+			QRT: 'Devo cessar a transmissão?',
+			QRU: 'Tem algo para mim?',
+			QRV: 'Está preparado?',
+			QRW: 'Devo avisar a... que você o está chamando em ... kHz(ou...MHz).',
+			QRX: 'Quando você chamará novamente?',
+			QRY: 'Qual a minha ordem de vez? (Refere-se a comunicação)',
+			QRZ: 'Quem está me chamando?',
+			QSA: 'Qual a intensidade de meus sinais(ou dos sinais de...)?',
+			QSB: 'A intensidade de meus sinais varia?',
+			QSC: 'Sua embarcação é de carga?',
+			QSD: 'Minha manipulação está defeituosa?',
+			QSE: 'Qual o deslocamento estimado da embarcação de salvamento?',
+			QSF: 'Você realizou o salvamento?',
+			QSG: 'Devo transmitir ... telegramas de uma vez?',
+			QSH: 'Você é capaz de retornar usando seu equipamento radiogoniométrico?',
+			QSI: 'Não consegui interromper a ... (indicativo de chamada).',
+			QSJ: 'Qual a taxa a ser cobrada para ... incluindo sua taxa interna?',
+			QSK: 'Pode ouvir-me entre seus sinais, em casa afirmativo, posso interromper sua transmissão?',
+			QSL: 'Pode acusar recebimento?',
+			QSM: 'Devo repetir o último telegrama que transmiti para você (ou algum telegrama anterior)?',
+			QSN: 'Escutou-me ou ...(indicativo de chamada) em ...kHz (ou ...MHz)?',
+			QSO: 'Pode comunicar-me diretamente (ou por retransmissão) com...?',
+			QSP: 'Quer retransmitir gratuitamente a ...?',
+			QSQ: 'Há médicos ou Enfermeiros a bordo ou ... (nome da pessoa) a bordo?',
+			QSR: 'Devo repetir a chamada na frequência de chamada?',
+			QSS: 'Que frequência de trabalho você usará?',
+			QSU: 'Devo transmitir ou responder nesta frequência ou em ...kHz(ou ... MHz) com emissões do tipo...?',
+			QSV: 'Devo transmitir uma série de "v" nesta frequência ou em ... kHz(ou ... MHz)?',
+			QSW: 'Vai transmitir nesta frequência ou em ... kHz (ou ... MHz) (com emissão do tipo ...)?',
+			QSX: 'Quer escutar a ... (indicativo de chamada) em ... kHz ( ou ... MHz)?',
+			QSY: 'Devo transmitr em outra frequência?',
+			QSZ: 'Tenho que transmitir cada palavra ou grupo mais de uma vez?',
+			QTA: 'Devo cancelar o mensagem número ...?',
+			QTB: 'Concorda com minha contagem de palavras?',
+			QTC: 'Quantos recados para transmitir?',
+			QTD: 'O que recolheu o barca ou a aeronave de salvamento?',
+			QTE: 'Qual a minha orientação com relação a você? ou Qual a minha orientação com relação a ... (indicativo de chamada)',
+			QTF: 'Quer indicar a posição de minha estação de acordo com as orientações tomadas pelas estações refiogoniométricas que você controla?',
+			QTG: 'Quer transmitir dois traços de 10 segundos cada, seguidos de seu indicativo de chamada (repetindo ... vezes) em kHz(ou ...MHz)? Quer pedir dois traços de 10 segundos cada, seguidos de seu indicativo de chamada (repetindo ... vezes) em kHz(ou ...MHz)?',
+			QTH: 'Qual é seu local endereço posição em latitude e longitude (ou de acordo com qualquer outra indicação)?',
+			QTI: 'Qual é o seu rumo VERDADEIRO?',
+			QTJ: 'Qual a sua velocidade (refere-se à velocidade de um navio ou aeronave com relação à água ou ar, respectivamente).',
+			QTK: 'Qual a velocidade de sua aeronave com relação à superfície terrestre?',
+			QTL: 'Qual o seu rumo VERDADEIRO?',
+			QTM: 'Qual é o seu rumo MAGNÉTICO?',
+			QTN: 'A que horas saiu de ... (lugar)?',
+			QTO: 'Pode comunicar-se com minha estação por meio de código internacional de sinais?',
+			QTR: 'Qual é a hora certa?',
+			QTS: 'Quer transmitir seu indicativo de chamada para sintonizar ou para que sua frequência possa ser medida agora (ou às ... horas) em ... kHz (ou MHz)?',
+			QTT: 'O sinal de identificação que segue se sobrepõe à outra emissão.',
+			QTU: 'Qual é o horário de funcionamento de sua estação?',
+			QTV: 'Devo fazer escuta por você na frequência de ... kHz (ou ... MHz) das ... às ... horas?',
+			QTW: 'Como se encontra os sobrevivente?',
+			QTX: 'Quer manter sua estação aberta para nova comunicação comigo até que eu o avise(ou até às... horas)?',
+			QTY: 'Você está seguindo para o lugar do acidente? Caso afirmativo, quando espera chegar?',
+			QTZ: 'Você continua a busca?',
+			QUA: 'Tem notícias de ... (indicativo de chamada)?',
+			QUB: 'Pode dar-me na seguinte ordem, informações sobre: a direção em graus VERDADEIROS e velocidade do vento na superfície; visibilidade; condições meteriológicas atuais; quantidade, tipo e altura das nuvens sobre a superfície em ... (lugar de observação)?',
+			QUC: 'Qual é o número (ou outra estação) da última mensagem qe você recebeu de mim ou de ... (indicativo de chamada)?',
+			QUD: 'Recebeu o sinal de urgência transmitido por ... (indicativo de chamada da estação móvel)?',
+			QUE: 'Pode usar telefonia tem ... (idioma) por meio de intérprete, se possível, em quaisquer frequência?',
+			QUF: 'Recebeu o sinal de perigo transmitido por ... (indicativo de chamada da estação móvel)?',
+			QUH: 'Quer dar-me a pressão barométrica atual ao nível do mar?',
+			QUI: 'Suas luzes de navegação estão acesas?',
+			QUJ: 'Quer indicar o rumo VERDADEIRO para chegar a você (ou ...)?',
+			QUK: 'Pode me informar as condições do mar observada em ... (lugar ou coordenadas)?',
+			QUL: 'Pode me informar as vagas observadas em ... (lugar ou coordenadas)?',
+			QUM: 'Posso recomeçar tráfego normal?',
+			QUN: 'Solicito às embarcações que se encontram em minhas proximidades imediatas ou (nas proximidades de ... latitude e ... longitude) ou (nas proximidades de ... ) favor indicar rumo VERDADEIRO e velocidade.',
+			QUO: 'Devo efetuar busca de: 1.aeronave 2.navio 3.embarcação de salvamento nas proximidades de ... latitude, ... longitude (ou de acordo com qualquer outra indicação) ?',
+			QUP: 'Quer indicar sua posição por meio de: 1.refletores 2.rastro de fumaça 3.sinais pirotécnicos?',
+			QUQ: 'Devo orientar meu refletor quase verticalmente para uma nuvem, piscando se possível e, caso aviste sua aeronave, dirigir o facho contra o vento e sobre a água (ou solo) para facilitar seu pouso?',
+			QUR: 'Os sobreviventes: 1.Receberam equipamentos salva-vidas? 2.Foram recolhidos por embarcação de salvamento? 3.Foram encontrados por grupo de salvamento de terra?',
+			QUS: 'Você avistou sobreviventes ou destroços? Em caso afirmativo, em que posição?',
+			QUT: 'Foi marcado o local do acidente?',
+			QUU: 'Devo dirigir o navio ou aeronave para minha posição?',
+			QUW: 'Você está na área de busca designada como ... nome da zona ou latitude e longitude) ?',
+			QUY: 'Foi marcada a posição da embarcação de salvamento? '
+		}
+		
+		
+		/** 
+		 * Funcao responsavel por escrever a mensagem de inicio no campo e 
+		 * limpar a div de resultado. 
+		 */
+		function verificarCampo(){
+			if (document.getElementById("codigo").value == ''){
+				document.getElementById("codigo").value = 'Digite o código aqui';
+				document.getElementById("resultado").innerHTML = '';
+			}
+		}
+		
+		
+		/**
+		 * Funcao responsavel por limpar o campo de digitacao do codigo
+		 * e a div de exibicao do resultado.
+		 */
+		function limparCampo(){
+			document.getElementById("codigo").value = '';
+			document.getElementById("resultado").innerHTML = '';
+		}
+		
+		
+		/**
+		 * Funcao responsavel por buscar o codigo no objeto que contem
+		 * a lista de codigos.
+		 */
+		function buscarCodigo(){
+		
+			// Variavel que ira conter o resultado
+			var resultado = '';
+		
+			// Obtem o codigo e transforma para maiusculo
+			codigo = document.getElementById("codigo").value.toUpperCase();
+			
+			// Atualiza o campo
+			document.getElementById("codigo").value = codigo;
+			
+			// Busca o codigo
+			if (codigos.hasOwnProperty(codigo)){
+				resultado = codigos[codigo];
+			} 
+	
+			// Exibe o resultado
+			document.getElementById("resultado").innerHTML = resultado;
+			
+		}
+		
+	</script>
+</body>
+</html>
+
