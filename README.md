@@ -16,5 +16,5 @@ Este software é distribuído sem qualquer garantia e pode ser utilizado, modifi
 Autor
 ---------------
 
-Angelito M. Goulart
+Angelito M. Goulart  
 <angelito@bsd.com.br>
