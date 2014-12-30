@@ -17,4 +17,4 @@ Autor
 ---------------
 
 Angelito M. Goulart  
-<angelito@bsd.com.br>
+<angelitomgoulart@gmail.com>
